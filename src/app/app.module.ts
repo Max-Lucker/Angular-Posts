@@ -1,6 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Provider } from '@angular/core';
+// import { registerLocaleData } from '@angular/common';
+// import ruLocale from '@angular/common/locales/ru';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -12,6 +17,9 @@ import { MainLayoutComponent } from './shared/components/main-layout/main-layout
 import { HomePageComponent } from './home-page/home-page.component';
 import { PostPageComponent } from './post-page/post-page.component';
 import { PostComponent } from './shared/components/post/post.component';
+
+// registerLocaleData(ruLocale, 'ru');
+// for locale date post.date | date:'medium':null:'ru'
 
 const INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -26,7 +34,14 @@ const INTERCEPTOR_PROVIDER: Provider = {
     PostPageComponent,
     PostComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, SharedModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
+  ],
   providers: [INTERCEPTOR_PROVIDER],
   bootstrap: [AppComponent],
 })
